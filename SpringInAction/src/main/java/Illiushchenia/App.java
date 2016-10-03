@@ -8,6 +8,10 @@ public class App
 {
     public static void main( String[] args )
     {
-        System.out.println( "Hello World!" );
+
+        BraveKnight braveKnight = new BraveKnight(new QuestKillDragon());
+        braveKnight.embarkInQuest();
+
+
     }
 }
