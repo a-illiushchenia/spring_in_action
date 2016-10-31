@@ -15,7 +15,10 @@ public class App
         ApplicationContext context = new
                 ClassPathXmlApplicationContext("applicationContextConfig.xml");
 
-        Performer performer = (Performer) context.getBean("duke");
+        context.getBean("auditorium");
+        Performer performer = (Performer) context.getBean("poeticDuke");
+        performer.perform();
+        performer = (Performer) context.getBean("kenny");
         performer.perform();
     }
 
