@@ -18,7 +18,11 @@ public class App
         context.getBean("auditorium");
         Performer performer = (Performer) context.getBean("poeticDuke");
         performer.perform();
+
         performer = (Performer) context.getBean("kenny");
+        performer.perform();
+
+        performer = (Performer) context.getBean("hank");
         performer.perform();
     }
 

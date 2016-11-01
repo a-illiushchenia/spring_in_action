@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
@@ -19,13 +20,33 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
     <bean id="auditorium" class="Illiushchenia.component.binding.Auditorium"
             init-method="turnOnLight"
             destroy-method="turnOffLight"/>
-    <bean id="kenny" class="Illiushchenia.component.binding.Instrumentalist">
-        <property name="song" value="Jingle Bells"/>
-        <!--<property name="instrument" ref="piano"/>-->
-        <property name="instrument">
-            <bean class="Illiushchenia.component.binding.Saxophone"/>
-        </property>
-    </bean>
+    <!--<bean id="kenny" class="Illiushchenia.component.binding.Instrumentalist">-->
+        <!--<property name="song" value="Jingle Bells"/>-->
+        <!--&lt;!&ndash;<property name="instrument" ref="piano"/>&ndash;&gt;-->
+        <!--<property name="instrument">-->
+            <!--<bean class="Illiushchenia.component.binding.Saxophone"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <bean id="kenny" class="Illiushchenia.component.binding.Instrumentalist"
+       p:song = "Jingle Bells"
+       p:instrument-ref="saxophone"/>
     <bean id="saxophone" class="Illiushchenia.component.binding.Saxophone"/>
     <bean id="piano" class="Illiushchenia.component.binding.Piano"/>
+
+    <bean id="hank" class="Illiushchenia.component.binding.OneManBand">
+        <property name="instruments">
+            <map>
+                <entry key="GUITAR" value-ref="guitar"/>
+                <entry key="CYMBAL" value-ref="cymbal"/>
+                <entry key="HARMONICA" value-ref="harmonica"/>
+            </map>
+        </property>
+    </bean>
+    <bean id="guitar" class="Illiushchenia.component.binding.Guitar"/>
+    <bean id="cymbal" class="Illiushchenia.component.binding.Cymbal"/>
+    <bean id="harmonica" class="Illiushchenia.component.binding.Harmonica"/>
+
+    <bean id="carl" class="Illiushchenia.component.binding.Instrumentalist">
+        <property name="song" value="#{kenny.song}"/>
+    </bean>
 </beans>
