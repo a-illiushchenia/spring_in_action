@@ -1,5 +1,6 @@
 package Illiushchenia.component.binding;
 
+@StringedInstrument
 public class Cymbal implements Instrument {
     public Cymbal(){};
 

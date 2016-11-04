@@ -2,8 +2,17 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--<context:annotation-config />-->
+    <context:component-scan base-package="Illiushchenia">
+        <context:include-filter type="assignable" expression="Illiushchenia.component.binding.Instrument"/>
+    </context:component-scan>
 
     <bean id="duke" class="Illiushchenia.component.binding.Juggler">
         <constructor-arg value="15"/>
@@ -42,11 +51,59 @@ http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
             </map>
         </property>
     </bean>
-    <bean id="guitar" class="Illiushchenia.component.binding.Guitar"/>
+    <!--<bean id="guitar" class="Illiushchenia.component.binding.Guitar"/>-->
     <bean id="cymbal" class="Illiushchenia.component.binding.Cymbal"/>
     <bean id="harmonica" class="Illiushchenia.component.binding.Harmonica"/>
 
     <bean id="carl" class="Illiushchenia.component.binding.Instrumentalist">
         <property name="song" value="#{kenny.song}"/>
     </bean>
+
+    <bean id="baseSaxophonist"
+          class="Illiushchenia.component.binding.Instrumentalist"
+          abstract="true">
+        <property name="instrument" ref="saxophone"/>
+        <property name="song" value="Jingle Bells"/>
+    </bean>
+    <bean id="david" parent="baseSaxophonist"/>
+    <bean id="frank" parent="baseSaxophonist">
+        <property name="song" value="Mary had a little lamb"/>
+    </bean>
+
+    <bean id="basePerformer" abstract="true">
+        <property name="song" value="Somewhere Over the Rainbow"/>
+    </bean>
+    <bean id="stevie"
+          class="Illiushchenia.component.binding.Instrumentalist"
+          parent="basePerformer">
+        <property name="instrument" ref="guitar"/>
+    </bean>
+
+    <bean id="harry" class="Illiushchenia.component.binding.Magician">
+        <property name="magicBox" ref="magicBox"/>
+        <property name="magicWords" value="Bippity boppity boo" />
+    </bean>
+
+    <bean id="magicBox"
+          class="Illiushchenia.component.binding.MagicBoxImpl">
+        <replaced-method name="getContents" replacer="tigerReplacer"/>
+    </bean>
+    <bean id="tigerReplacer"
+          class="Illiushchenia.component.binding.TigerReplacer"/>
+
+    <!--<bean id="pianist"-->
+          <!--class="Illiushchenia.component.binding.Instrumentalist"-->
+          <!--abstract="true">-->
+        <!--<property name="song" value="Chopsticks"/>-->
+        <!--<property name="instrument">-->
+            <!--<bean class="Illiushchenia.component.binding.Piano"/>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<aop:spring-configured />-->
+
+    <bean id="guitar1" class="Illiushchenia.component.binding.Guitar1"/>
+
+    <bean id="instrumentalist1"
+          class="Illiushchenia.component.binding.Instrumentalist1"/>
 </beans>

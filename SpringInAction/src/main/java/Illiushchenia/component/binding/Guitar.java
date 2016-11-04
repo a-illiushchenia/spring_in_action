@@ -1,5 +1,8 @@
 package Illiushchenia.component.binding;
 
+//@Component
+@StringedInstrument
+@Strummed
 public class Guitar implements Instrument {
     public Guitar(){};
 

@@ -15,15 +15,24 @@ public class App
         ApplicationContext context = new
                 ClassPathXmlApplicationContext("applicationContextConfig.xml");
 
-        context.getBean("auditorium");
-        Performer performer = (Performer) context.getBean("poeticDuke");
+//        context.getBean("auditorium");
+//        Performer performer = (Performer) context.getBean("poeticDuke");
+//        performer.perform();
+//
+//        performer = (Performer) context.getBean("kenny");
+//        performer.perform();
+//
+//        performer = (Performer) context.getBean("hank");
+//        performer.perform();
+//
+//        Performer magician = (Performer) context.getBean("harry");
+//        magician.perform();
+
+        Performer performer = (Performer) context.getBean("instrumentalist1");
         performer.perform();
 
-        performer = (Performer) context.getBean("kenny");
-        performer.perform();
-
-        performer = (Performer) context.getBean("hank");
-        performer.perform();
+//        Instrumentalist instrumentalist = new Instrumentalist();
+//        instrumentalist.perform();
     }
 
 //    public static void main( String[] args )
