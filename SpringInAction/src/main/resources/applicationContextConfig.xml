@@ -7,7 +7,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
 
     <!--<context:annotation-config />-->
     <context:component-scan base-package="Illiushchenia">
@@ -27,18 +29,18 @@
     <bean id="ticket" class="Illiushchenia.component.binding.Ticket" scope="prototype"/>
     <!--Описание методов, кторые вызываеются сразу после создания объекта и перед уничтоженем объекта-->
     <bean id="auditorium" class="Illiushchenia.component.binding.Auditorium"
-            init-method="turnOnLight"
-            destroy-method="turnOffLight"/>
+          init-method="turnOnLight"
+          destroy-method="turnOffLight"/>
     <!--<bean id="kenny" class="Illiushchenia.component.binding.Instrumentalist">-->
-        <!--<property name="song" value="Jingle Bells"/>-->
-        <!--&lt;!&ndash;<property name="instrument" ref="piano"/>&ndash;&gt;-->
-        <!--<property name="instrument">-->
-            <!--<bean class="Illiushchenia.component.binding.Saxophone"/>-->
-        <!--</property>-->
+    <!--<property name="song" value="Jingle Bells"/>-->
+    <!--&lt;!&ndash;<property name="instrument" ref="piano"/>&ndash;&gt;-->
+    <!--<property name="instrument">-->
+    <!--<bean class="Illiushchenia.component.binding.Saxophone"/>-->
+    <!--</property>-->
     <!--</bean>-->
     <bean id="kenny" class="Illiushchenia.component.binding.Instrumentalist"
-       p:song = "Jingle Bells"
-       p:instrument-ref="saxophone"/>
+          p:song="Jingle Bells"
+          p:instrument-ref="saxophone"/>
     <bean id="saxophone" class="Illiushchenia.component.binding.Saxophone"/>
     <bean id="piano" class="Illiushchenia.component.binding.Piano"/>
 
@@ -55,9 +57,9 @@
     <bean id="cymbal" class="Illiushchenia.component.binding.Cymbal"/>
     <bean id="harmonica" class="Illiushchenia.component.binding.Harmonica"/>
 
-    <bean id="carl" class="Illiushchenia.component.binding.Instrumentalist">
-        <property name="song" value="#{kenny.song}"/>
-    </bean>
+    <!--<bean id="carl" class="Illiushchenia.component.binding.Instrumentalist">-->
+    <!--<property name="song" value="#{kenny.song}"/>-->
+    <!--</bean>-->
 
     <bean id="baseSaxophonist"
           class="Illiushchenia.component.binding.Instrumentalist"
@@ -81,7 +83,7 @@
 
     <bean id="harry" class="Illiushchenia.component.binding.Magician">
         <property name="magicBox" ref="magicBox"/>
-        <property name="magicWords" value="Bippity boppity boo" />
+        <property name="magicWords" value="Bippity boppity boo"/>
     </bean>
 
     <bean id="magicBox"
@@ -92,12 +94,12 @@
           class="Illiushchenia.component.binding.TigerReplacer"/>
 
     <!--<bean id="pianist"-->
-          <!--class="Illiushchenia.component.binding.Instrumentalist"-->
-          <!--abstract="true">-->
-        <!--<property name="song" value="Chopsticks"/>-->
-        <!--<property name="instrument">-->
-            <!--<bean class="Illiushchenia.component.binding.Piano"/>-->
-        <!--</property>-->
+    <!--class="Illiushchenia.component.binding.Instrumentalist"-->
+    <!--abstract="true">-->
+    <!--<property name="song" value="Chopsticks"/>-->
+    <!--<property name="instrument">-->
+    <!--<bean class="Illiushchenia.component.binding.Piano"/>-->
+    <!--</property>-->
     <!--</bean>-->
 
     <!--<aop:spring-configured />-->
@@ -106,4 +108,64 @@
 
     <bean id="instrumentalist1"
           class="Illiushchenia.component.binding.Instrumentalist1"/>
+
+    <bean id="audience" class="Illiushchenia.component.binding.Audience"/>
+
+    <aop:config>
+        <aop:aspect ref="audience">
+            <!--<aop:pointcut id="performance"-->
+            <!--expression="execution(* Illiushchenia.component.binding.Performer.perform(..))"/>-->
+            <!--<aop:before-->
+            <!--pointcut-ref="performance"-->
+            <!--method="takeSeats"/>-->
+            <!--<aop:before-->
+            <!--pointcut-ref="performance"-->
+            <!--method="turnOffCellPhones"/>-->
+            <!--<aop:after-returning-->
+            <!--pointcut-ref="performance"-->
+            <!--method="applaud"/>-->
+            <!--<aop:after-throwing-->
+            <!--pointcut-ref="performance"-->
+            <!--method="demandRefund"/>-->
+
+            <aop:pointcut id="performance2"
+                          expression="execution(* Illiushchenia.component.binding.Performer.perform(..))"/>
+
+            <aop:around
+                    pointcut-ref="performance2"
+                    method="watchPerformance"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="telepat"
+          class="Illiushchenia.component.binding.Telepat"/>
+    <bean id="volunteer"
+          class="Illiushchenia.component.binding.Volunteer"/>
+    <aop:config>
+        <aop:aspect ref="telepat">
+            <aop:pointcut id="thinking"
+                          expression="execution(*
+                            Illiushchenia.component.binding.Thinker.thinkOfSomething(String))
+                            and args(thoughts)"/>
+            <aop:before
+                    pointcut-ref="thinking"
+                    method="interceptThoughts"
+                    arg-names="thoughts"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="graciousContestant"
+          class="Illiushchenia.component.binding.GraciousContestant"/>
+    <aop:config>
+        <aop:aspect>
+            <aop:declare-parents
+                    types-matching="Illiushchenia.component.binding.Performer+"
+                    implement-interface="Illiushchenia.component.binding.Contestant"
+                    delegate-ref="graciousContestant"/>
+        </aop:aspect>
+    </aop:config>
+
+    <bean id="audienceAnnotation"
+          class="Illiushchenia.component.binding.AudienceAnnotation"/>
+    <aop:aspectj-autoproxy/>
 </beans>
